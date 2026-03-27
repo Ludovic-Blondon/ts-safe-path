@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22, 24]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Run tests
+        if: matrix.node-version < 22
+        run: npm test
+
+      - name: Run tests with coverage
+        if: matrix.node-version >= 22
+        run: npm run test:coverage
+
+      - name: Type tests
+        run: npm run test:types
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify CJS
+        run: >
+          node -e "const m = require('./dist/index.cjs'); if (!m.get) throw new Error('CJS: get not exported')"
+
+      - name: Verify ESM
+        run: >
+          node -e "import('./dist/index.js').then(m => { if (!m.get) throw new Error('ESM: get not exported') })"
+
+      - name: Pack dry run
+        run: npm pack --dry-run

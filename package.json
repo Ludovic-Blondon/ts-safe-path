@@ -1,0 +1,71 @@
+{
+  "name": "ts-safe-path",
+  "version": "0.1.0",
+  "description": "Type-safe deep property access with full path inference and autocomplete. Zero dependencies.",
+  "author": "Ludovic Blondon",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "typescript",
+    "type-safe",
+    "deep-access",
+    "path",
+    "get",
+    "set",
+    "dot-notation",
+    "nested",
+    "property",
+    "inference",
+    "autocomplete",
+    "zero-dependency"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:types": "vitest run --typecheck.only",
+    "lint": "eslint src/ tests/",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "bench": "tsx benchmarks/bench.ts",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run lint && npm run test && npm run build",
+    "ci": "npm run lint && npm run format:check && npm run typecheck && npm run test:coverage && npm run build"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "dot-prop": "^9.0.0",
+    "eslint": "^10.1.0",
+    "lodash": "^4.17.21",
+    "prettier": "^3.0.0",
+    "tinybench": "^3.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.2"
+  }
+}
